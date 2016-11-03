@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, request
 app = Flask(__name__)
 
 @app.route('/')
@@ -16,6 +16,13 @@ def show_user_profile(username):
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
     return 'Post %d' % post_id
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        return 'This is the POST method.'
+    else:
+        return 'This is NOT the POST method.'
 
 with app.test_request_context():
     print url_for('index')
