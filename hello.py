@@ -1,9 +1,9 @@
-from flask import Flask
+from flask import Flask, url_for
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return "Index Page"
+    return "Index Page changed!"
 
 @app.route('/hello')
 def hello_world():
@@ -16,3 +16,9 @@ def show_user_profile(username):
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
     return 'Post %d' % post_id
+
+with app.test_request_context():
+    print url_for('index')
+    print url_for('hello_world', next='main')
+    print url_for('show_user_profile', username='davin')
+    print url_for('show_post', post_id=2)
