@@ -1,9 +1,11 @@
-from flask import Flask, url_for, request, render_template
+from flask import Flask, url_for, request, render_template, session, escape
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return "Index Page changed!"
+    if 'username' in session:
+        return "You are signed in as %s." % escape(session['username'])
+    return "You are not signed in!"
 
 @app.route('/hello')
 def hello_world():
@@ -22,6 +24,7 @@ def login():
     if request.method == 'POST':
         return 'This is the POST method.'
     else:
+        session['username'] = 'Davin'
         return 'This is NOT the POST method.'
 
 with app.test_request_context():
@@ -29,3 +32,5 @@ with app.test_request_context():
     print url_for('hello_world', next='main')
     print url_for('show_user_profile', username='davin')
     print url_for('show_post', post_id=2)
+
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
